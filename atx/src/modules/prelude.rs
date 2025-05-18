@@ -1,6 +1,10 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
+use regex::Regex;
 //yeah, i know. fuck me
+
+
+//[STRUCTURES]
 
 ///a struct that holds the context required for the api to work.
 ///intended to be built up from the `.env` file.
@@ -14,7 +18,6 @@ pub struct ApiConfig {
 }
 
 ///stores prompt inputs and format args.
-///also built up from the `.env` file.
 pub struct PromptConfig {
     pub language: String,      //"english", "japanese"
     pub prompt: String,        //the actual fucking prompt
@@ -53,12 +56,26 @@ pub struct ParserFlags {
     pub ignore_translated_text: bool,//skip repeat lines
 }
 
-///thread-safe state tracking
+///thread-safe state tracking.
 ///helps in computing costs and track usage across threads
 #[derive(Debug, Default)]
 pub struct Count {
     pub input: AtomicUsize,    //number of tokens thrown in
     pub output: AtomicUsize,   //number of tokens processed
 }
+
+///the state that the translation process is in.
+///think of it as the overall context.
+pub struct Context {
+    pub api: ApiConfig,         //api stuff
+    pub prompt: PromptConfig,   //prompt stuff
+    pub flags: ParserFlags,     //game specific stuff
+    pub regex: Regex,           //for japanese text detection
+    pub threads: usize,         //track thread pool size
+    pub token_count: Arc<Count>,//track shared usage
+    pub lock: Arc<Mutex<()>>    //to synchronise stdout
+}
+
+//[IMPLEMENTATIONS]
 
 
