@@ -1,0 +1,26 @@
+##parser config.
+
+#add comments later, i'm zoinked as fuck rn
+code_401 = true
+code_405 = true
+code_102 = true
+code_101 = false
+code_408 = false
+code_122 = false
+code_355655 = false
+code_357 = false
+code_657 = false
+code_356 = false
+code_319 = false
+code_320 = false
+code_321 = false
+code_324 = false
+code_111 = false
+code_108 = false
+
+first_line_speakers = false
+facename_101 = false
+output_names = false
+br_flag = false
+fix_textwrap = true
+ignore_translated_text = false
