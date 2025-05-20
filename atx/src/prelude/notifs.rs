@@ -7,10 +7,10 @@ pub enum Notif {
     Warning(String),
 }
 
-pub fn Log(string: &str) -> Notif {
+pub fn log(string: &str) -> Notif {
     Notif::Log(string.to_string())
 }
-pub fn Warning(string: &str) -> Notif {
+pub fn warning(string: &str) -> Notif {
     Notif::Warning(string.to_string())
 }
 
@@ -37,14 +37,14 @@ impl<T> Success<T> {
     }
 
     ///attach the log into the vector...
-    pub fn log(mut self, log: &str) -> Self {
-        self.notifs.push(Log(log));
+    pub fn log(mut self, message: &str) -> Self {
+        self.notifs.push(log(message));
         self
     }
 
     ///attach the warning into the vector...
-    pub fn warn(mut self, warning: &str) -> Self {
-        self.notifs.push(Warning(warning));
+    pub fn warn(mut self, message: &str) -> Self {
+        self.notifs.push(warning(message));
         self
     }
 }
