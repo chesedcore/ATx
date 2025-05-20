@@ -44,7 +44,7 @@ impl ParserFlags<engines::RPGMaker> {
         //define green and red paths
         match table.get(field) {
             Some(Value::Boolean(b)) => Ok(
-                codes.chain(b).log(&format!("Fetched bool {} from RPGM field {}.", b, field))
+                codes.chain(*b).log(&format!("Fetched bool {} from RPGM field {}.", b, field))
             ),
             Some(other) => Err(Disaster(
                     format!("RPGM field {} is not a boolean! Found {:?} instead.", field, other)
