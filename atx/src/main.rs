@@ -8,6 +8,7 @@ mod prelude {
     pub mod count;
     pub mod context;
     pub mod loader;
+    pub mod preprocessor;
 }
 
 use crate::prelude::loader;

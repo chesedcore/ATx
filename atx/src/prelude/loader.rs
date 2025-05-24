@@ -1,8 +1,14 @@
 use toml::Value;
 use std::fs;
 use crate::prelude::notifs::*;
+use dotenvy::dotenv;
+use std::env;
 
 const PARSER_CONFIG_LOAD_PATH: &str = "ParserConfig.toml";
+const REQUIRED_ENV_VARS: &[&str] = &[
+    "api", "key", "organization", "model", "language", "note_width", "batchsize",
+    "timeout", "file_threads", "threads", "width", "list_width", ""
+];
 
 pub fn load_parser_config() -> Result<Success<Value>, Disaster> {
     

@@ -29,29 +29,3 @@ impl <Engine> ParserFlags<Engine> {
     }
 }
 
-impl ParserFlags<engines::RPGMaker> {
-    ///attempts to grab the code from the table.
-    pub fn get_code(&self, field: &str) -> Result<Success<bool>, Disaster> {
-        let codes = self.get_raw("RPGMaker"); 
-
-        
-        let table = match codes.val{
-            //grab the rpgmaker table
-            Value::Table(t) => t,
-            _ => return Err(Disaster("No RPGMaker table found in ParserConfig.toml!".to_string())),
-        };
-        
-        //define green and red paths
-        match table.get(field) {
-            Some(Value::Boolean(b)) => Ok(
-                codes.chain(*b).log(&format!("Fetched bool {} from RPGM field {}.", b, field))
-            ),
-            Some(other) => Err(Disaster(
-                    format!("RPGM field {} is not a boolean! Found {:?} instead.", field, other)
-            )),
-            None => Ok(
-                codes.chain(false).warn(&format!("No bool found for field {}, defaulting to false.", field))
-            )
-        }
-    }
-}

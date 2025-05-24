@@ -1,6 +1,7 @@
 ##parser config.
 
 #add comments later, i'm zoinked as fuck rn
+[RPGMaker]
 code_401 = true
 code_405 = true
 code_102 = true
