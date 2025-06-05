@@ -1,20 +1,17 @@
 //flags.rs 
 use toml::Value;
-use std::marker::PhantomData;
-use crate::prelude::notifs::*;
-use crate::prelude::engines;
+use crate::prelude::notifs::Success;
 
 ///determines which data should be processed or skipped.
 #[derive(Debug)]
-pub struct ParserFlags<Engine> {
+pub struct ParserFlags {
     table: Value,
-    engine: PhantomData<Engine>,
 }
 
-impl <Engine> ParserFlags<Engine> {
+impl ParserFlags {
     ///assumes ownership of the table provided to the flag.
     pub fn from_toml(table: Value) -> Self {
-        ParserFlags { table, engine: PhantomData }
+        ParserFlags { table }
     }
 
     ///attempts to fetch a raw &Value from the toml table.
