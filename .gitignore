@@ -17,3 +17,4 @@ target/
 #.idea/
 atx/Cargo.lock
 atx/.env
+atx/raw/bsxx.dat

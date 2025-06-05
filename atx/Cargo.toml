@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-dotenvy = "0.15.7"
-regex = "1.11.1"
-serde = { version = "1.0.219", features = ["derive"] }
-toml = "0.8.22"
+log = "0.4.27"
+project-root = "0.2.2"
+simple_logger = "5.0.0"
