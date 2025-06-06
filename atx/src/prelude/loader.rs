@@ -1,10 +1,9 @@
-use log::{info, error};
-use std::fs::File;
-use std::io::{self, BufReader, Read};
-use std::path::{Path, PathBuf};
-use project_root::get_project_root;
+//loader.rs
 
-const CHUNK_SIZE: usize = 1024;
+use log::{info, error};
+use std::io::{self};
+use std::path::PathBuf;
+use project_root::get_project_root;
 
 #[derive(Debug)]
 pub struct Loader {
@@ -14,10 +13,10 @@ pub struct Loader {
 }
 
 impl Loader {
-    pub fn new() -> Result<Self, String> {
+    pub fn new() -> std::io::Result<Self> {
         let root = get_project_root().map_err(|e| {
             error!("Failed to get project root: {}", e);
-            format!("{:?}", e)
+            std::io::Error::new(std::io::ErrorKind::UnexpectedEof, format!("{:?}", e))
         })?;
 
         info!("Project root detected: {:?}", root);
