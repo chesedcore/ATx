@@ -1,17 +1,26 @@
 //bishop.rs 
 
-use atx::native::bishop::unscrambler::BSXDecoder;
-use atx::prelude::engine::Engine;
-use atx::prelude::unscrambler::Unscrambler;
+use crate::native::bishop::unscrambler::BSXDecoder;
+use crate::prelude::engine::Engine;
+use crate::prelude::loader::Loader;
 
 pub struct BishopEngine {
-    unscrambler: Unscrambler,
+    unscrambler: BSXDecoder,
 }
 
 impl BishopEngine {
     pub fn new() -> std::io::Result<Self> {
-        Self {
-            
-        }
+        let loader = Loader::new()?;
+        let bytes = loader.load_raw("bsxx.dat")?;
+        let unscrambler = BSXDecoder::new(bytes)?;
+        
+        let engine = BishopEngine{unscrambler};
+        Ok(engine)
+    }
+}
+
+impl Engine for BishopEngine {
+    fn unscramble(&self) {
+        self.unscrambler.unscramble_text();
     }
 }

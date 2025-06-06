@@ -1,6 +1,7 @@
 pub mod native {
     pub mod bishop {
         pub mod unscrambler;
+        pub mod bishop;
     }
 }
 

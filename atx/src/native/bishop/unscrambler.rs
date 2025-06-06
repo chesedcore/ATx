@@ -119,7 +119,6 @@ impl BSXDecoder {
             message_offsets
         };
         
-        info!("Starting decoder service!");
         Ok(decoder)
     }
 

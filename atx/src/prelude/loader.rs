@@ -1,7 +1,7 @@
 //loader.rs
 
 use log::{info, error};
-use std::io::{self};
+use std::io;
 use std::path::PathBuf;
 use project_root::get_project_root;
 
@@ -13,7 +13,7 @@ pub struct Loader {
 }
 
 impl Loader {
-    pub fn new() -> std::io::Result<Self> {
+    pub fn new() -> io::Result<Self> {
         let root = get_project_root().map_err(|e| {
             error!("Failed to get project root: {}", e);
             std::io::Error::new(std::io::ErrorKind::UnexpectedEof, format!("{:?}", e))
