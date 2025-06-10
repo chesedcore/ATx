@@ -2,7 +2,7 @@
 
 use crate::native::bishop::unscrambler::BSXDecoder;
 use crate::prelude::engine::Engine;
-use crate::prelude::loader::Loader;
+use crate::prelude::saveload::Saveloader;
 
 pub struct BishopEngine {
     unscrambler: BSXDecoder,
@@ -10,8 +10,8 @@ pub struct BishopEngine {
 
 impl BishopEngine {
     pub fn new() -> std::io::Result<Self> {
-        let loader = Loader::new()?;
-        let bytes = loader.load_raw("bsxx.dat")?;
+        let saveloader = Saveloader::new()?;
+        let bytes = saveloader.load_raw("bsxx.dat")?;
         let unscrambler = BSXDecoder::new(bytes)?;
         
         let engine = BishopEngine{unscrambler};

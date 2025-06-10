@@ -6,13 +6,13 @@ use std::path::PathBuf;
 use project_root::get_project_root;
 
 #[derive(Debug)]
-pub struct Loader {
+pub struct Saveloader {
     pub root: PathBuf,
     pub raw: PathBuf,
     pub from: PathBuf,
 }
 
-impl Loader {
+impl Saveloader {
     pub fn new() -> io::Result<Self> {
         let root = get_project_root().map_err(|e| {
             error!("Failed to get project root: {}", e);
@@ -33,5 +33,13 @@ impl Loader {
    pub fn load_raw(&self, filename: &str) -> io::Result<Vec<u8>> {
        let path = &self.raw.join(filename);
        std::fs::read(path)
-   } 
+   }
+
+   pub fn save_from(&self, filename: &str, data: Vec<String>) -> io::Result<()> {
+       let mut file = std::fs::OpenOptions::new()
+                                        .write(true)
+                                        .append(true)
+                                        .create(true)
+       todo!()
+   }
 }

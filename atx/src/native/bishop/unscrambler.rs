@@ -1,6 +1,7 @@
 //bishop/unscrambler.rs 
 use log::{error, info};
 use crate::prelude::engine::Engine;
+use std::io::Write;
 
 //how the fuck does this shit work?
 //so a typical bsxx.dat looks like this:
@@ -127,8 +128,7 @@ impl BSXDecoder {
         let code_start = self.code_block_offset as usize;
         let code_end = code_start + self.code_block_size as usize;
         let code = &self.script_buffer[code_start..code_end];
-
-
+        
         let mut current_address: usize = 0;
         while current_address < code.len() {
             match code[current_address] {
@@ -153,7 +153,7 @@ impl BSXDecoder {
                     if current_address+2 > code.len() {break;}
 
                     let message_type = code[current_address+1];
-                    let mut message_id = None;
+                    let message_id;
                     let mut name_id = None;
 
                     match message_type {
@@ -163,7 +163,7 @@ impl BSXDecoder {
                             name_id = Some(Self::read_four_le_bytes_from(code, current_address+6)?);
                         }
 
-                        other => { error!("Unknown message type discovered at 0x{:X}! Type: {}", current_address, other); }
+                        other => { error!("Unknown message type discovered at 0x{:X}! Type: {}", current_address, other); break;}
                     }
 
                     if let Some(id) = name_id {
