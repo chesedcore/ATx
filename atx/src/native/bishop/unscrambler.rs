@@ -1,7 +1,5 @@
 //bishop/unscrambler.rs 
 use log::{error, info};
-use crate::prelude::engine::Engine;
-use std::io::Write;
 
 //how the fuck does this shit work?
 //so a typical bsxx.dat looks like this:
@@ -78,7 +76,6 @@ impl BSXDecoder {
         //name_list_offset = start + name_offset_list_offset * 2 
         //hopefully that made sense. :sob:
         
-        //sizes are a 16 bit thing, so we deflate it to 16bit by divyying by 2
         let name_offset_list_size = Self::read_four_le_bytes_from(&script_buffer, 0x8C)? >> 2;
         let name_block_start = Self::read_four_le_bytes_from(&script_buffer, 0x90)?;
         info!("Name block headers extracted!");
@@ -123,13 +120,18 @@ impl BSXDecoder {
         Ok(decoder)
     }
 
-    pub fn unscramble_text(&self) -> std::io::Result<()> {
+    pub fn unscramble_text(&self) -> std::io::Result<Vec<String>> {
         info!("Unscrambling started.");
         let code_start = self.code_block_offset as usize;
         let code_end = code_start + self.code_block_size as usize;
         let code = &self.script_buffer[code_start..code_end];
         
+        let mut lines = Vec::new();
+
         let mut current_address: usize = 0;
+
+        let mut current_speaker = "DEFAULT_NAME".to_string();
+
         while current_address < code.len() {
             match code[current_address] {
                 
@@ -169,15 +171,19 @@ impl BSXDecoder {
                     if let Some(id) = name_id {
                         if id < self.name_offsets.len() as u32 {
                             if let Some(name) = self.get_string_at(self.name_offsets[id as usize] as usize) {
-                                info!("[{}]", name);
+                                info!("Name found: {}", name);
+                                current_speaker = name.clone();
+
                             }
                         }
                     }
 
-                    if let Some(id) = message_id {
+                    else if let Some(id) = message_id {
                         if id < self.message_offsets.len() as u32 {
                             if let Some(message) = self.get_string_at(self.message_offsets[id as usize] as usize){
-                                info!("{}", message);
+                                
+                                Self::add_line_to(&mut lines, &current_speaker, id, &message);
+
                             }
                         }
                     }
@@ -199,7 +205,7 @@ impl BSXDecoder {
             }
         }
         
-        Ok(())
+        Ok(lines)
     }
     
 
@@ -247,5 +253,10 @@ impl BSXDecoder {
             ).collect();
 
         String::from_utf16(&utf16).ok()
+    }
+
+    fn add_line_to(lines: &mut Vec<String>, speaker: &str, index: u32, text: &str) {
+        lines.push(format!("[{index:07X}][{speaker}]: {text}"));
+        info!("{}", format!("[{speaker}]: {text}"));
     }
 }

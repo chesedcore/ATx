@@ -7,4 +7,5 @@ fn main() {
     info!("Started logger!");
 
     let engine = BishopEngine::new().unwrap();
+    engine.unscramble();
 }
