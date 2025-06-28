@@ -178,7 +178,7 @@ impl BSXDecoder {
                         }
                     }
 
-                    else if let Some(id) = message_id {
+                    if let Some(id) = message_id {
                         if id < self.message_offsets.len() as u32 {
                             if let Some(message) = self.get_string_at(self.message_offsets[id as usize] as usize){
                                 
