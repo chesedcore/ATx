@@ -7,5 +7,9 @@ fn main() {
     info!("Started logger!");
 
     let engine = BishopEngine::new().unwrap();
-    engine.unscramble();
+    let res = engine.unscramble();
+    match res {
+        Ok(_) => {},
+        Err(e) => {error!("{}", e)},
+    }
 }

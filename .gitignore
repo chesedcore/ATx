@@ -18,3 +18,5 @@ target/
 atx/Cargo.lock
 atx/.env
 atx/raw/bsxx.dat
+atx/from/bsxx.txt
+atx/from/name_list.txt

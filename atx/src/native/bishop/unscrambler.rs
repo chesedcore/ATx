@@ -42,7 +42,7 @@ const VALID_SIGNATURES: [&[u8]; 4] = [
 ///CS might be ass to look at, but at least their code isn't. 
 
 pub struct BSXDecoder {
-    script_buffer: Vec<u8>,   //borrows the pointer to the vec<u8> from load. 
+    script_buffer: Vec<u8>,
     code_block_size: u32,
     code_block_offset: u32,  
     name_offsets: Vec<u32>,
@@ -114,7 +114,7 @@ impl BSXDecoder {
             code_block_offset,
             code_block_size,
             name_offsets,
-            message_offsets
+            message_offsets,
         };
         
         Ok(decoder)
@@ -255,8 +255,22 @@ impl BSXDecoder {
         String::from_utf16(&utf16).ok()
     }
 
+    ///adds a formatted name : dialogue line along with the hexadecimal offset to the list of lines
+    ///spoken.
     fn add_line_to(lines: &mut Vec<String>, speaker: &str, index: u32, text: &str) {
         lines.push(format!("[{index:07X}][{speaker}]: {text}"));
         info!("{}", format!("[{speaker}]: {text}"));
+    }
+
+    ///collect every single speaker name into a HashMap<u32, String>
+    pub fn collect_names(&self) -> Vec<String> {
+        let mut names = Vec::new();
+
+        for (id, &offset) in self.name_offsets.iter().enumerate() {
+            if let Some(name) = self.get_string_at(offset as usize) {
+                names.push(format!("[{id:07X}][{name}]"));
+            }
+        }
+        names
     }
 }

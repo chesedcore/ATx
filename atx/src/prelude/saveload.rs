@@ -1,7 +1,7 @@
 //loader.rs
 
 use log::{info, error};
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 use std::path::PathBuf;
 use project_root::get_project_root;
 
