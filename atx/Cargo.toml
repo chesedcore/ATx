@@ -5,5 +5,4 @@ edition = "2024"
 
 [dependencies]
 log = "0.4.27"
-project-root = "0.2.2"
 simple_logger = "5.0.0"
